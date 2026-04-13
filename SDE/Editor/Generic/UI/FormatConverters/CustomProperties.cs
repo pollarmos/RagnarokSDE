@@ -85,8 +85,8 @@ namespace SDE.Editor.Generic.UI.FormatConverters
             _grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(-1, GridUnitType.Auto) });
 
             _button = new Button();
-            _button.Width = 22;
-            _button.Height = 22;
+            _button.Width = 18;
+            //_button.Height = 22;
             _button.Margin = new Thickness(0, 3, 3, 3);
             _button.Content = "...";
             _button.Click += _button_Click;
@@ -2116,8 +2116,8 @@ namespace SDE.Editor.Generic.UI.FormatConverters
             _grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(-1, GridUnitType.Auto) });
 
             Button button = new Button();
-            button.Width = 22;
-            button.Height = 22;
+            button.Width = 18;
+            button.Height = 18;
             button.Margin = new Thickness(0, 3, 3, 3);
             button.Content = new Image { Source = ApplicationManager.GetResourceImage("settings.png"), Width = 16, Height = 16 };
             button.Click += new RoutedEventHandler(_button_Click2);
@@ -2298,17 +2298,17 @@ namespace SDE.Editor.Generic.UI.FormatConverters
             base._onInitalized();
 
             Button button = new Button();
-            button.Width = 22;
-            button.Height = 22;
-            button.Margin = new Thickness(0, 3, 3, 3);
+            button.Width = 18;
+            button.Height = 18;
+            button.Margin = new Thickness(0, 0, 0, 0);
             button.Content = new Image { Source = ApplicationManager.GetResourceImage("eye.png"), Width = 16, Height = 16 };
             button.Click += new RoutedEventHandler(_button_Click3);
             button.SetValue(Grid.ColumnProperty, 1);
             _grid.Children.Add(button);
             _grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(-1, GridUnitType.Auto) });
 
-            _button.Width = 22;
-            _button.Height = 22;
+            _button.Width = 18;
+            //_button.Height = 22;
             _button.Margin = new Thickness(0, 3, 3, 3);
             _button.Content = new Image { Source = ApplicationManager.GetResourceImage("settings.png"), Width = 16, Height = 16 };
             _button.Click += new RoutedEventHandler(_button_Click2);
@@ -2388,8 +2388,8 @@ namespace SDE.Editor.Generic.UI.FormatConverters
         {
             base._onInitalized();
 
-            _button.Width = 22;
-            _button.Height = 22;
+            _button.Width = 18;
+            //_button.Height = 22;
             _button.Margin = new Thickness(0, 3, 3, 3);
             _button.Content = new Image { Source = ApplicationManager.GetResourceImage("settings.png"), Width = 16, Height = 16 };
             _button.Click += new RoutedEventHandler(_button_Click2);

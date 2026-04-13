@@ -67,9 +67,9 @@ namespace SDE.Editor.Generic.UI.FormatConverters {
 				preview.IsHitTestVisible = false;
 
 				Button button = new Button();
-				button.Width = 22;
-				button.Height = 22;
-				button.Margin = new Thickness(0, 3, 3, 3);
+				button.Width = 18;
+				button.Height = 18;
+				button.Margin = new Thickness(0, 0, 0, 0);
 				button.Content = new Image { Stretch = Stretch.None, Source = ApplicationManager.PreloadResourceImage("arrowdown.png") };
 				button.Click += new RoutedEventHandler(_button_Click);
 				button.SetValue(Grid.ColumnProperty, 2);

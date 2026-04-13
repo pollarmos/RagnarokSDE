@@ -65,7 +65,22 @@ namespace SDE.Editor.Generic.UI.CustomControls {
 				new ListViewDataTemplateHelper.GeneralColumnInfo { Header = "Drop %", DisplayExpression = "Drop", SearchGetAccessor = "DropOriginal", ToolTipBinding = "DropOriginal", FixedWidth = 60, TextAlignment = TextAlignment.Right },
 			}, new DefaultListViewComparer<MobDropView>(), new string[] { "Default", "{DynamicResource TextForeground}", "IsMvp", "{DynamicResource CellBrushMvp}", "IsRandomGroup", "{DynamicResource CellBrushLzma}" });
 
-			_lv.ContextMenu = new ContextMenu();
+            GridView gridView = _lv.View as GridView;
+            if (gridView != null)
+            {
+                Style headerStyle = _lv.TryFindResource("DbGridViewColumnHeaderStyle") as Style;
+                if (headerStyle != null)
+                {
+                    foreach (GridViewColumn column in gridView.Columns)
+                    {
+                        GridViewColumnHeader header = column.Header as GridViewColumnHeader;
+                        if (header != null)
+                            header.Style = headerStyle;
+                    }
+                }
+            }
+
+            _lv.ContextMenu = new ContextMenu();
 			_lv.MouseDoubleClick += new MouseButtonEventHandler(_lv_MouseDoubleClick);
 
 			MenuItem miSelect = new MenuItem { Header = "Select", Icon = new Image { Source = ApplicationManager.PreloadResourceImage("arrowdown.png") } };

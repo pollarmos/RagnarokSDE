@@ -74,7 +74,22 @@ namespace SDE.Editor.Generic.UI.CustomControls {
 				new ListViewDataTemplateHelper.GeneralColumnInfo { Header = "Condition", DisplayExpression = "Condition", SearchGetAccessor = "Condition", ToolTipBinding = "Condition", IsFill = true, TextAlignment = TextAlignment.Left, TextWrapping = TextWrapping.Wrap }
 			}, new DefaultListViewComparer<MobSkillView>(), new string[] { "Default", "{DynamicResource TextForeground}" });
 
-			_lv.ContextMenu = new ContextMenu();
+            GridView gridView = _lv.View as GridView;
+            if (gridView != null)
+            {
+                Style headerStyle = _lv.TryFindResource("DbGridViewColumnHeaderStyle") as Style;
+                if (headerStyle != null)
+                {
+                    foreach (GridViewColumn column in gridView.Columns)
+                    {
+                        GridViewColumnHeader header = column.Header as GridViewColumnHeader;
+                        if (header != null)
+                            header.Style = headerStyle;
+                    }
+                }
+            }
+
+            _lv.ContextMenu = new ContextMenu();
 			_lv.MouseDoubleClick += new MouseButtonEventHandler(_lv_MouseDoubleClick);
 
 			MenuItem miSelectSkills = new MenuItem { Header = "Select skill", Icon = new Image { Source = ApplicationManager.PreloadResourceImage("arrowdown.png") } };

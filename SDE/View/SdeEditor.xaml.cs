@@ -93,6 +93,14 @@ namespace SDE.View
             Instance = this;
             ShowInTaskbar = true;
 
+            Loaded += delegate
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    ApplyMetaGrfViewerHeaderStyle();
+                }), DispatcherPriority.Loaded);
+            };
+
             _asyncOperation = new AsyncOperation(_progressBar);
             _clientDatabase = new SdeDatabase(_metaGrf);
             _loadMenu();
@@ -695,6 +703,37 @@ namespace SDE.View
         private void _menuItemIllustrationExport_Click(object sender, RoutedEventArgs e)
         {
             _exportImages(@"data\texture\À¯ÀúÀÎÅÍÆäÀÌ½º\collection\", 1);
+        }
+
+        private void ApplyMetaGrfViewerHeaderStyle()
+        {
+            Style headerStyle = TryFindResource("DbGridViewColumnHeaderStyle") as Style;
+            if (headerStyle == null)
+                return;
+
+            foreach (GridViewColumnHeader header in FindVisualChildren<GridViewColumnHeader>(_metaGrfViewer))
+            {
+                header.Style = headerStyle;
+            }
+        }
+
+        private static IEnumerable<T> FindVisualChildren<T>(DependencyObject parent) where T : DependencyObject
+        {
+            if (parent == null)
+                yield break;
+
+            int count = VisualTreeHelper.GetChildrenCount(parent);
+
+            for (int i = 0; i < count; i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(parent, i);
+
+                if (child is T target)
+                    yield return target;
+
+                foreach (T descendant in FindVisualChildren<T>(child))
+                    yield return descendant;
+            }
         }
     }
 }

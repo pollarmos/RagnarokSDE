@@ -109,8 +109,8 @@ namespace SDE.Editor.Generic.UI.CustomControls
             _imageResource.SetValue(Grid.ColumnProperty, 2);
 
             Button button = new Button();
-            button.Width = 22;
-            button.Height = 22;
+            button.Width = 18;
+            //button.Height = 22;
             button.Margin = new Thickness(3);
             button.Content = "...";
             button.Click += new RoutedEventHandler(_button_Click);

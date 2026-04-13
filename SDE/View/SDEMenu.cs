@@ -72,6 +72,23 @@ namespace SDE.View
             Close();
         }
 
+        private void _minButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void _maxButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState == WindowState.Maximized
+                ? WindowState.Normal
+                : WindowState.Maximized;
+        }
+
+        private void _closeButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
         private void _debugList_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             try

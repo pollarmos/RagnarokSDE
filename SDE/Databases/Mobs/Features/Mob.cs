@@ -5,7 +5,20 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace SDE.Databases.Mobs.Features {
-	public class Mob : ICloneable {
+    [Flags]
+    public enum MobDefinedFields {
+        None = 0,
+        JapaneseName = 1 << 0,
+        Level = 1 << 1,
+        Size = 1 << 2,
+        Race = 1 << 3,
+        Element = 1 << 4,
+        ElementLevel = 1 << 5,
+        WalkSpeed = 1 << 6,
+        Modes = 1 << 7,
+    }
+
+    public class Mob : ICloneable {
 		public string AegisName;
 		public string Name;
 		public string JapaneseName;
@@ -53,7 +66,9 @@ namespace SDE.Databases.Mobs.Features {
 		public string AliasSprite;
 		public string ClientSprite;
 
-		public object Clone() {
+        public MobDefinedFields DefinedFields;
+
+        public object Clone() {
 			var obj = (Mob)MemberwiseClone();
 
 			obj.MvpDrops = MvpDrops.Select(p => (ItemDrop)p.Clone()).ToList();

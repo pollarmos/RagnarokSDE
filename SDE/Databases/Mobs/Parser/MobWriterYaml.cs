@@ -11,9 +11,21 @@ using ItemDrop = SDE.Databases.Mobs.Features.ItemDrop;
 
 namespace SDE.Databases.Mobs.Parser {
 	public class MobWriterYaml : DatabaseWriterYaml {
-		public override string KeyField => "Id";
+        private bool _isImport;
+        public override string KeyField => "Id";
 
-		public override void WriteEntry(StringBuilder builder, ReadableTuple tuple) {
+        public override void Writer(DbSaveContext context, BaseDatabase db)
+        {
+            _isImport = db.Source.IsImport;
+            base.Writer(context, db);
+        }
+
+        private bool _isDefined(Mob model, MobDefinedFields field)
+        {
+            return (model.DefinedFields & field) != 0;
+        }
+
+        public override void WriteEntry(StringBuilder builder, ReadableTuple tuple) {
 			if (tuple == null)
 				return;
 
@@ -26,14 +38,14 @@ namespace SDE.Databases.Mobs.Parser {
 			builder.AppendLine($"    AegisName: {model.AegisName}");
 			builder.AppendLine($"    Name: {model.Name}");
 
-			if (model.JapaneseName != model.Name)
-				builder.AppendLine($"    JapaneseName: {model.JapaneseName}");
+            if ((_isImport && _isDefined(model, MobDefinedFields.JapaneseName)) || (!_isImport && model.JapaneseName != model.Name))
+                builder.AppendLine($"    JapaneseName: {model.JapaneseName}");
 
-			// Default values for mobs are set in s_mob_db::s_mob_db()
-			if (DbReader.ToInt(model.Level, out intValue))
-				builder.AppendLine($"    Level: {intValue}");
+            // Default values for mobs are set in s_mob_db::s_mob_db()
+            if ((!_isImport || _isDefined(model, MobDefinedFields.Level)) && DbReader.ToInt(model.Level, out intValue))
+                builder.AppendLine($"    Level: {intValue}");
 
-			if (DbReader.ToLong(model.Hp, out longValue) && longValue != 1)
+            if (DbReader.ToLong(model.Hp, out longValue) && longValue != 1)
 				builder.AppendLine($"    Hp: {longValue}");
 
 			if (DbReader.ToLong(model.Sp, out longValue) && longValue != 1)
@@ -108,25 +120,25 @@ namespace SDE.Databases.Mobs.Parser {
 			if (DbReader.ToInt(model.ChaseRange, out intValue) && intValue != 0)
 				builder.AppendLine($"    ChaseRange: {intValue}");
 
-			//if (model.Size != SizeType.Size_Small)
-				builder.AppendLine($"    Size: " + EnumInfos.ToYamlString(model.Size));
+            if (!_isImport || _isDefined(model, MobDefinedFields.Size))
+                builder.AppendLine($"    Size: " + EnumInfos.ToYamlString(model.Size));
 
-			//if (model.Race != RaceType.RC_FORMLESS)
-				builder.AppendLine($"    Race: " + EnumInfos.ToYamlString(model.Race));
+            if (!_isImport || _isDefined(model, MobDefinedFields.Race))
+                builder.AppendLine($"    Race: " + EnumInfos.ToYamlString(model.Race));
 
-			if (DbReader.ToLong(model.RaceGroups, out flagValue) && flagValue != 0)
+            if (DbReader.ToLong(model.RaceGroups, out flagValue) && flagValue != 0)
 				DbWriter.ExpandFlagToBool<Race2Flag>(builder, flagValue, "RaceGroups", "    ");
 
-			//if (model.Element != ElementType.ELE_NEUTRAL)
-				builder.AppendLine($"    Element: " + EnumInfos.ToYamlString(model.Element));
+            if (!_isImport || _isDefined(model, MobDefinedFields.Element))
+                builder.AppendLine($"    Element: " + EnumInfos.ToYamlString(model.Element));
 
-			//if (model.ElementLevel != ElementLevelType.ELELV_1)
-				builder.AppendLine($"    ElementLevel: {(int)model.ElementLevel}");
+            if (!_isImport || _isDefined(model, MobDefinedFields.ElementLevel))
+                builder.AppendLine($"    ElementLevel: {(int)model.ElementLevel}");
 
-			if (DbReader.ToInt(model.WalkSpeed, out intValue) /*&& intValue != 150*/)
-				builder.AppendLine($"    WalkSpeed: {intValue}");
+            if ((!_isImport || _isDefined(model, MobDefinedFields.WalkSpeed)) && DbReader.ToInt(model.WalkSpeed, out intValue))
+                builder.AppendLine($"    WalkSpeed: {intValue}");
 
-			if (DbReader.ToInt(model.AttackDelay, out intValue) && intValue != 100)
+            if (DbReader.ToInt(model.AttackDelay, out intValue) && intValue != 100)
 				builder.AppendLine($"    AttackDelay: {intValue}");
 
 			int aMotion;
@@ -149,24 +161,26 @@ namespace SDE.Databases.Mobs.Parser {
 				builder.AppendLine($"    Title: {model.Title}");
 
 			var aiModeResult = GetAiAndModeFlag(DbReader.ToLong(model.Modes));
+            bool writeModes = !_isImport || _isDefined(model, MobDefinedFields.Modes);
 
-			if (aiModeResult.HasAi) {
-				var r = EnumInfos.ToYamlString(aiModeResult.Ai);
 
-				// Redirect 12 -> 05, because rAthena prefers 05 (mode 12 and 05 are the same thing)
-				if (r == "12")
-					r = "05";
+            if (writeModes && aiModeResult.HasAi)
+            {
+                var r = EnumInfos.ToYamlString(aiModeResult.Ai);
 
-				builder.AppendLine($"    Ai: " + r);
-			}
-			
-			if (model.Class != ClassType.CLASS_NORMAL)
+                if (r == "12")
+                    r = "05";
+
+                builder.AppendLine($"    Ai: " + r);
+            }
+
+            if (model.Class != ClassType.CLASS_NORMAL)
 				builder.AppendLine($"    Class: " + EnumInfos.ToYamlString(model.Class));
 
-			if (aiModeResult.HasModes)
-				DbWriter.ExpandFlagToBool<ModeFlag>(builder, (long)aiModeResult.Modes, "Modes", "    ");
+            if (writeModes && aiModeResult.HasModes)
+                DbWriter.ExpandFlagToBool<ModeFlag>(builder, (long)aiModeResult.Modes, "Modes", "    ");
 
-			if (model.MvpDrops.Any(p => !String.IsNullOrEmpty(p.Item))) {
+            if (model.MvpDrops.Any(p => !String.IsNullOrEmpty(p.Item))) {
 				builder.AppendLine("    MvpDrops:");
 
 				foreach (var drop in model.MvpDrops) {

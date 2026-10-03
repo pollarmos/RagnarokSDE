@@ -35,7 +35,25 @@ namespace SDE.Databases.Mobs.Features {
 			Tab = tab;
 		}
 
-		public void SetModel(ReadableTuple tuple, Mob model) {
+        private bool _isUndefinedImportField(MobDefinedFields field)
+        {
+            return Model != null &&
+                   Tab?.Database?.Source?.IsImport == true &&
+                   (Model.DefinedFields & field) == 0;
+        }
+
+        private void _setImportField(MobDefinedFields field, bool defined = true)
+        {
+            if (Model == null || Tab?.Database?.Source?.IsImport != true)
+                return;
+
+            if (defined)
+                Model.DefinedFields |= field;
+            else
+                Model.DefinedFields &= ~field;
+        }
+
+        public void SetModel(ReadableTuple tuple, Mob model) {
 			if (IsLocked)
 				return;
 
@@ -67,9 +85,24 @@ namespace SDE.Databases.Mobs.Features {
 
 		public string AegisName { get => Model?.AegisName; set { ExecuteCommand(value); ValidateAegisName(); } }
 		public string Name { get => Model?.Name; set => ExecuteCommand(value); }
-		public string JapaneseName { get => Model?.JapaneseName; set { ExecuteCommand(value); OnPropertyChanged(nameof(JapaneseNamePreview)); } }
-		public string Level { get => Model?.Level; set => ExecuteCommand(value); }
-		public string Hp { get => Model?.Hp; set => ExecuteCommand(value); }
+        public string JapaneseName {
+            get => _isUndefinedImportField(MobDefinedFields.JapaneseName) ? null : Model?.JapaneseName;
+            set
+            {
+                _setImportField(MobDefinedFields.JapaneseName, !String.IsNullOrEmpty(value));
+                ExecuteCommand(value);
+                OnPropertyChanged(nameof(JapaneseNamePreview));
+            }
+        }
+        public string Level {
+            get => _isUndefinedImportField(MobDefinedFields.Level) ? null : Model?.Level;
+            set
+            {
+                _setImportField(MobDefinedFields.Level, !String.IsNullOrEmpty(value));
+                ExecuteCommand(value);
+            }
+        }
+        public string Hp { get => Model?.Hp; set => ExecuteCommand(value); }
 		public string Sp { get => Model?.Sp; set => ExecuteCommand(value); }
 		public string BaseExp { get => Model?.BaseExp; set => ExecuteCommand(value); }
 		public string JobExp { get => Model?.JobExp; set => ExecuteCommand(value); }
@@ -89,13 +122,84 @@ namespace SDE.Databases.Mobs.Features {
 		public string AttackRange { get => Model?.AttackRange; set => ExecuteCommand(value); }
 		public string SkillRange { get => Model?.SkillRange; set => ExecuteCommand(value); }
 		public string ChaseRange { get => Model?.ChaseRange; set => ExecuteCommand(value); }
-		public EnumInfoBase Size { get => EnumInfos.GetEnumBase(Model?.Size); set => ExecuteCommand((SizeType)value.Value); }
-		public EnumInfoBase Race { get => EnumInfos.GetEnumBase(Model?.Race); set => ExecuteCommand((RaceType)value.Value); }
-		public string RaceGroups { get => Model?.RaceGroups; set => ExecuteCommand(value); }
-		public EnumInfoBase Element { get => EnumInfos.GetEnumBase(Model?.Element); set => ExecuteCommand((ElementType)value.Value); }
-		public EnumInfoBase ElementLevel { get => EnumInfos.GetEnumBase(Model?.ElementLevel); set => ExecuteCommand((ElementLevelType)value.Value); }
-		public string WalkSpeed { get => Model?.WalkSpeed; set => ExecuteCommand(value); }
-		public string AttackDelay { get => Model?.AttackDelay; set => ExecuteCommand(value); }
+        public EnumInfoBase Size {
+            get
+            {
+                if (_isUndefinedImportField(MobDefinedFields.Size))
+                    return null;
+
+                return EnumInfos.GetEnumBase(Model?.Size);
+            }
+            set
+            {
+                if (value == null)
+                    return;
+
+                _setImportField(MobDefinedFields.Size);
+                ExecuteCommand((SizeType)value.Value);
+            }
+        }
+        public EnumInfoBase Race {
+            get
+            {
+                if (_isUndefinedImportField(MobDefinedFields.Race))
+                    return null;
+
+                return EnumInfos.GetEnumBase(Model?.Race);
+            }
+            set
+            {
+                if (value == null)
+                    return;
+
+                _setImportField(MobDefinedFields.Race);
+                ExecuteCommand((RaceType)value.Value);
+            }
+        }
+        public string RaceGroups { get => Model?.RaceGroups; set => ExecuteCommand(value); }
+        public EnumInfoBase Element {
+            get
+            {
+                if (_isUndefinedImportField(MobDefinedFields.Element))
+                    return null;
+
+                return EnumInfos.GetEnumBase(Model?.Element);
+            }
+            set
+            {
+                if (value == null)
+                    return;
+
+                _setImportField(MobDefinedFields.Element);
+                ExecuteCommand((ElementType)value.Value);
+            }
+        }
+        public EnumInfoBase ElementLevel {
+            get
+            {
+                if (_isUndefinedImportField(MobDefinedFields.ElementLevel))
+                    return null;
+
+                return EnumInfos.GetEnumBase(Model?.ElementLevel);
+            }
+            set
+            {
+                if (value == null)
+                    return;
+
+                _setImportField(MobDefinedFields.ElementLevel);
+                ExecuteCommand((ElementLevelType)value.Value);
+            }
+        }
+        public string WalkSpeed {
+            get => _isUndefinedImportField(MobDefinedFields.WalkSpeed) ? null : Model?.WalkSpeed;
+            set
+            {
+                _setImportField(MobDefinedFields.WalkSpeed, !String.IsNullOrEmpty(value));
+                ExecuteCommand(value);
+            }
+        }
+        public string AttackDelay { get => Model?.AttackDelay; set => ExecuteCommand(value); }
 		public string AttackMotion { get => Model?.AttackMotion; set => ExecuteCommand(value); }
 		public string ClientAttackMotion { get => Model?.ClientAttackMotion; set => ExecuteCommand(value); }
 		public string DamageMotion { get => Model?.DamageMotion; set => ExecuteCommand(value); }
@@ -104,8 +208,15 @@ namespace SDE.Databases.Mobs.Features {
 		public string Title { get => Model?.Title; set => ExecuteCommand(value); }
 		public string Ai { get => Model?.Ai; set => ExecuteCommand(value); }
 		public EnumInfoBase Class { get => EnumInfos.GetEnumBase(Model?.Class); set => ExecuteCommand((Mobs.Common.ClassType)value.Value); }
-		public string Modes { get => Model?.Modes; set => ExecuteCommand(value); }
-		public string AliasSprite { get => Model?.AliasSprite; set => ExecuteCommand(value); }
+        public string Modes {
+            get => _isUndefinedImportField(MobDefinedFields.Modes) ? null : Model?.Modes;
+            set
+            {
+                _setImportField(MobDefinedFields.Modes, !String.IsNullOrEmpty(value));
+                ExecuteCommand(value);
+            }
+        }
+        public string AliasSprite { get => Model?.AliasSprite; set => ExecuteCommand(value); }
 		public string ClientSprite { get => Model?.ClientSprite; set => ExecuteCommand(value); }
 
 		public string JapaneseNamePreview => Model == null || !String.IsNullOrEmpty(Model.JapaneseName) ? "" : Model.Name;

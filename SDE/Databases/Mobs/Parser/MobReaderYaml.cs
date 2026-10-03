@@ -27,7 +27,35 @@ namespace SDE.Databases.Mobs.Parser {
 			}
 
 			foreach (var entry in mob.OfType<ParserKeyValue>()) {
-				switch (entry.Key) {
+                switch (entry.Key)
+                {
+                    case "JapaneseName":
+                        model.DefinedFields |= MobDefinedFields.JapaneseName;
+                        break;
+                    case "Level":
+                        model.DefinedFields |= MobDefinedFields.Level;
+                        break;
+                    case "Size":
+                        model.DefinedFields |= MobDefinedFields.Size;
+                        break;
+                    case "Race":
+                        model.DefinedFields |= MobDefinedFields.Race;
+                        break;
+                    case "Element":
+                        model.DefinedFields |= MobDefinedFields.Element;
+                        break;
+                    case "ElementLevel":
+                        model.DefinedFields |= MobDefinedFields.ElementLevel;
+                        break;
+                    case "WalkSpeed":
+                        model.DefinedFields |= MobDefinedFields.WalkSpeed;
+                        break;
+                    case "Ai":
+                    case "Modes":
+                        model.DefinedFields |= MobDefinedFields.Modes;
+                        break;
+                }
+                switch (entry.Key) {
 					case "AegisName":
 						model.AegisName = entry.ObjectValue;
 						break;
@@ -165,9 +193,9 @@ namespace SDE.Databases.Mobs.Parser {
 				mode |= Int64.Parse(DbReader.LoadFlag<ModeFlag>(mob["Modes"]));
 				model.Modes = mode.ToString();
 
-				if (model.JapaneseName == null)
-					model.JapaneseName = model.Name;
-			}
+                if (!context.Source.IsImport && model.JapaneseName == null)
+                    model.JapaneseName = model.Name;
+            }
 
 			if (table.EnableEvents && previousModel != null) {
 				if (previousModel.Equals(model))

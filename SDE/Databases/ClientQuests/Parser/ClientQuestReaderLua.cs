@@ -92,7 +92,12 @@ namespace SDE.Databases.ClientQuests.Parser {
 
 			for (int i = 0; i < list.Variables.Count; i++) {
 				LBaseType descEntry = list.Variables[i];
-				text += ((LStringValue)descEntry).Value;
+
+                // 퀘스트 lub 파일 디컴파일 오류 무시 (IconName = "ico_nq.bmp" 의 위치 오류)
+                if (descEntry is LKeyValue)
+                    continue;
+
+                text += ((LStringValue)descEntry).Value;
 				
 				if (i != list.Variables.Count - 1)
 					text += "\r\n";

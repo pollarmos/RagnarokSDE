@@ -7,7 +7,9 @@ namespace SDE.Databases.Items.Features {
 	public class Item : ICloneable {
 		public string AegisName;
 		public string Name;
-		public ItemType Type = ItemType.IT_ETC;
+		// import item_db type관련 속성 추가
+        public bool TypeDefined;
+        public ItemType Type = ItemType.IT_ETC;
 		public AmmoType AmmoType = 0;
 		public CardType CardType = 0;
 		public WeaponType WeaponType = 0;

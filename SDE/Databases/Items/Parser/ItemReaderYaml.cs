@@ -25,10 +25,12 @@ namespace SDE.Databases.Items.Parser {
 				model = (Item)model.Clone();
 			}
 
-			// Some propertie must be read first
-			model.Type = DbReader.LoadEnum(item["Type"], ItemType.IT_ETC);
+            // Some propertie must be read first
+            var typeEntry = item["Type"];
+            model.TypeDefined = !context.Source.IsImport || typeEntry != null;
+            model.Type = DbReader.LoadEnum(typeEntry, ItemType.IT_ETC);
 
-			foreach (var entry in item.OfType<ParserKeyValue>()) {
+            foreach (var entry in item.OfType<ParserKeyValue>()) {
 				switch (entry.Key) {
 					case "AegisName":
 						model.AegisName = entry.ObjectValue;

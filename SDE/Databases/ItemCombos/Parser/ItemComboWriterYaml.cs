@@ -31,43 +31,57 @@ namespace SDE.Databases.ItemCombos.Parser {
 
 				var allLines = lines.AllLines;
 
-				foreach (GroupCommand<int, ReadableTuple> command in db.Table.Commands.GetUndoCommands().OfType<GroupCommand<int, ReadableTuple>>()) {
-					foreach (DeleteTuple<int, ReadableTuple> deleteCommand in command.Commands.OfType<DeleteTuple<int, ReadableTuple>>()) {
-						Delete(entries[deleteCommand.Key], allLines);
-					}
+                foreach (GroupCommand<int, ReadableTuple> command in db.Table.Commands.GetUndoCommands().OfType<GroupCommand<int, ReadableTuple>>())
+                {
+                    foreach (DeleteTuple<int, ReadableTuple> deleteCommand in command.Commands.OfType<DeleteTuple<int, ReadableTuple>>())
+                    {
+                        if (entries.TryGetValue(deleteCommand.Key, out var parserEntry))
+                            Delete(parserEntry, allLines);
+                    }
 
-					foreach (ChangeTupleKey<int, ReadableTuple> changeTupleKeyCommand in command.Commands.OfType<ChangeTupleKey<int, ReadableTuple>>()) {
-						// If the key was changed, the old key must be removed
-						Delete(entries[changeTupleKeyCommand.Key], allLines);
-					}
-				}
+                    foreach (ChangeTupleKey<int, ReadableTuple> changeTupleKeyCommand in command.Commands.OfType<ChangeTupleKey<int, ReadableTuple>>())
+                    {
+                        // If the key was changed, the old key must be removed
+                        if (entries.TryGetValue(changeTupleKeyCommand.Key, out var parserEntry))
+                            Delete(parserEntry, allLines);
+                    }
+                }
 
-				foreach (ChangeTupleKey<int, ReadableTuple> command in db.Table.Commands.GetUndoCommands().OfType<ChangeTupleKey<int, ReadableTuple>>()) {
-					// If the key was changed, the old key must be removed
-					Delete(entries[command.Key], allLines);
-				}
+                foreach (ChangeTupleKey<int, ReadableTuple> command in db.Table.Commands.GetUndoCommands().OfType<ChangeTupleKey<int, ReadableTuple>>())
+                {
+                    // If the key was changed, the old key must be removed
+                    if (entries.TryGetValue(command.Key, out var parserEntry))
+                        Delete(parserEntry, allLines);
+                }
 
-				Dictionary<string, List<ItemCombo>> modelsToAdd = new Dictionary<string, List<ItemCombo>>();
+                Dictionary<string, List<ItemCombo>> modelsToAdd = new Dictionary<string, List<ItemCombo>>();
 
 				foreach (ReadableTuple tuple in db.Table.FastItems.Where(p => !p.Normal).OrderBy(p => p.GetKey<int>())) {
 					int key = tuple.GetKey<int>();
 					var model = tuple.GetModel<ItemCombo>();
 
-					if (tuple.Modified) {
-						var parserEntry = entries[key];
-						ClearLines(parserEntry, allLines);
+                    if (tuple.Modified && entries.TryGetValue(key, out var parserEntry))
+                    {
+                        var oldScript = parserEntry.Parent.Parent.Parent["Script"].ObjectValue;
 
-						if (model.Script == parserEntry.Parent.Parent.Parent["Script"].ObjectValue) {
-							StringBuilder builderEntry = new StringBuilder();
-							WriteSubCombo(builderEntry, model);
-							var entryData = builderEntry.ToString().Trim('\r', '\n');
-							
-							allLines[parserEntry.Line - 1] = entryData;
-							continue;
-						}
-					}
+                        if (model.Script == oldScript)
+                        {
+                            // Combo 내용만 변경된 경우
+                            ClearLines(parserEntry, allLines);
 
-					if (!modelsToAdd.TryGetValue(model.Script, out var list)) {
+                            StringBuilder builderEntry = new StringBuilder();
+                            WriteSubCombo(builderEntry, model);
+                            var entryData = builderEntry.ToString().Trim('\r', '\n');
+
+                            allLines[parserEntry.Line - 1] = entryData;
+                            continue;
+                        }
+
+                        // Script가 변경된 경우 기존 Combo를 기존 Script 그룹에서 제거
+                        Delete(parserEntry, allLines);
+                    }
+
+                    if (!modelsToAdd.TryGetValue(model.Script, out var list)) {
 						list = new List<ItemCombo>();
 						modelsToAdd[model.Script] = list;
 					}

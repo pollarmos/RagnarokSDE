@@ -17,10 +17,12 @@ using Utilities.Extension;
 
 namespace SDE.Databases.Items.Parser {
 	public class ItemWriterYaml : DatabaseWriterYaml {
-		public override string KeyField => "Id";
+        private bool _isImport;
+        public override string KeyField => "Id";
 
 		public override void Writer(DbSaveContext context, BaseDatabase db) {
-			try {
+            _isImport = db.Source.IsImport;
+            try {
 				if (db.Attached["Import:item_db_usable"] != null &&
 					db.Attached["Import:item_db_equip"] != null &&
 					db.Attached["Import:item_db_etc"] != null) {
@@ -108,9 +110,10 @@ namespace SDE.Databases.Items.Parser {
 
 			var type = model.Type;
 
-			builder.AppendLine($"    Type: " + EnumInfos.ToYamlString(model.Type));
+            if (!_isImport || model.TypeDefined)
+                builder.AppendLine($"    Type: " + EnumInfos.ToYamlString(model.Type));
 
-			switch (type) {
+            switch (type) {
 				case ItemType.IT_AMMO:
 					builder.AppendLine("    SubType: " + EnumInfos.ToYamlString(model.AmmoType));
 					break;

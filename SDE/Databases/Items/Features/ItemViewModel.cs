@@ -57,8 +57,35 @@ namespace SDE.Databases.Items.Features {
 
 		public string AegisName { get => Model?.AegisName; set { ExecuteCommand(value); ValidateAegisName(); } }
 		public string Name { get => Model?.Name; set => ExecuteCommand(value); }
-		public EnumInfoBase Type { get => EnumInfos.GetEnumBase(Model?.Type); set { ExecuteCommand((ItemType)value.Value); OnPropertyChanged(nameof(HasSubType)); OnPropertyChanged(nameof(HasNoSubType)); OnPropertyChanged(nameof(HasNoGear)); } }
-		public EnumInfoBase AmmoType { get => EnumInfos.GetEnumBase(Model?.AmmoType); set => ExecuteCommand((AmmoType)value.Value); }
+        public EnumInfoBase Type
+        {
+            get
+            {
+                if (Model == null)
+                    return null;
+
+                if (Tab?.Database?.Source?.IsImport == true && !Model.TypeDefined)
+                    return null;
+
+                return EnumInfos.GetEnumBase(Model?.Type);
+            }
+            set
+            {
+                if (value == null)
+                    return;
+
+                if (Tab?.Database?.Source?.IsImport == true)
+                    Model.TypeDefined = true;
+
+                ExecuteCommand((ItemType)value.Value);
+
+                OnPropertyChanged(nameof(Type));
+                OnPropertyChanged(nameof(HasSubType));
+                OnPropertyChanged(nameof(HasNoSubType));
+                OnPropertyChanged(nameof(HasNoGear));
+            }
+        }
+        public EnumInfoBase AmmoType { get => EnumInfos.GetEnumBase(Model?.AmmoType); set => ExecuteCommand((AmmoType)value.Value); }
 		public EnumInfoBase CardType { get => EnumInfos.GetEnumBase(Model?.CardType); set => ExecuteCommand((CardType)value.Value); }
 		public EnumInfoBase WeaponType { get => EnumInfos.GetEnumBase(Model?.WeaponType); set => ExecuteCommand((WeaponType)value.Value); }
 		public string Buy { get => Model?.Buy; set { ExecuteCommand(value); OnPropertyChanged(nameof(BuyPreview)); OnPropertyChanged(nameof(SellPreview)); } }

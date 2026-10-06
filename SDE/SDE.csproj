@@ -160,6 +160,21 @@
     <Compile Include="Databases\ItemCombos\Controls\ScriptAutocompleteButton.xaml.cs">
       <DependentUpon>ScriptAutocompleteButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Databases\ItemGroups\Features\ItemGroup.cs" />
+    <Compile Include="Databases\ItemGroups\Features\ItemGroupEntry.cs" />
+    <Compile Include="Databases\ItemGroups\Features\ItemGroupEntryViewModel.cs" />
+    <Compile Include="Databases\ItemGroups\Features\ItemGroupSubGroup.cs" />
+    <Compile Include="Databases\ItemGroups\Features\ItemGroupSubGroupViewModel.cs" />
+    <Compile Include="Databases\ItemGroups\Features\ItemGroupViewModel.cs" />
+    <Compile Include="Databases\ItemGroups\Features\ItemGroupViewYaml.xaml.cs">
+      <DependentUpon>ItemGroupViewYaml.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Databases\ItemGroups\ItemGroupAttributes.cs" />
+    <Compile Include="Databases\ItemGroups\ItemGroupDatabase.cs" />
+    <Compile Include="Databases\ItemGroups\Parser\ItemGroupParserProvider.cs" />
+    <Compile Include="Databases\ItemGroups\Parser\ItemGroupReaderYaml.cs" />
+    <Compile Include="Databases\ItemGroups\Parser\ItemGroupWriterYaml.cs" />
+    <Compile Include="Databases\ItemGroups\Properties\ItemGroupNameBinding.cs" />
     <Compile Include="Databases\Items\Controls\ScriptAutocompleteButton.xaml.cs">
       <DependentUpon>ScriptAutocompleteButton.xaml</DependentUpon>
     </Compile>
@@ -891,6 +906,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Databases\ItemGroups\Features\ItemGroupViewYaml.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Databases\Items\Controls\ScriptAutocompleteButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1483,13 +1502,11 @@
   <ItemGroup>
     <Resource Include="Resources\sword.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Databases\NewFolder1\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.MonthStamp.Increment" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" />
+      <UserProperties BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_BuildVersioningStyle="None.None.MonthStamp.Increment" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

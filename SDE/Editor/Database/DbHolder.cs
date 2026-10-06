@@ -17,6 +17,7 @@ using SDE.Databases.Quests;
 using SDE.Databases.Skills;
 using SDE.Databases.Titles;
 using SDE.Editor.Generic.DbTabs;
+using SDE.Databases.ItemGroups;
 
 namespace SDE.Editor.Database {
 	/// <summary>
@@ -36,7 +37,9 @@ namespace SDE.Editor.Database {
 			_dbs.Add(new ClientItemDatabase());
 			_dbs.Add(new ItemComboDatabase());
 			_dbs.Add(new ItemComboDatabaseImport());
-			_dbs.Add(new SkillDatabase());
+            _dbs.Add(new ItemGroupDatabase());
+            _dbs.Add(new ItemGroupDatabaseImport());
+            _dbs.Add(new SkillDatabase());
 			_dbs.Add(new SkillDatabaseImport());
 			_dbs.Add(new MobDatabase());
 			_dbs.Add(new MobDatabaseImport());

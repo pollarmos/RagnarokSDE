@@ -329,7 +329,25 @@ namespace SDE.Databases {
 			ImportTable = ItemComboImport,
 		};
 
-		public static DataSource MobSkillImport { get; } = new DataSource("mob_skill_db2") {
+		// item_group_db.yml 데이터 소스 추가
+        public static DataSource ItemGroupImport { get; } = new DataSource("item_group_db2")
+        {
+            DisplayName = "Item Group Import",
+            Paths = {
+			   @"import\item_group_db.yml",
+			},
+        };
+
+        public static DataSource ItemGroup { get; } = new DataSource("item_group_db")
+        {
+            DisplayName = "Item Group",
+            Paths = {
+				@"{DBPATH}\item_group_db.yml",
+			},
+            ImportTable = ItemGroupImport,
+        };
+
+        public static DataSource MobSkillImport { get; } = new DataSource("mob_skill_db2") {
 			DisplayName = "Mob Skill Import",
 			Paths = {
 				@"import\mob_skill_db.txt",

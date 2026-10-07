@@ -1,5 +1,6 @@
 ﻿using SDE.Databases.Generic.Features;
 using System.Runtime.CompilerServices;
+using SDE.Editor.Database;
 
 namespace SDE.Databases.ItemGroups.Features {
     public class ItemGroupEntryViewModel : BaseModelView<ItemGroupEntry> {
@@ -15,24 +16,111 @@ namespace SDE.Databases.ItemGroups.Features {
             set => ExecuteCommand(value);
         }
 
-        public string Item {
+        public string Item
+        {
             get => Model?.Item;
-            set => ExecuteCommand(value);
+            set
+            {
+                ExecuteCommand(value);
+                OnPropertyChanged(nameof(DisplayItemName));
+            }
         }
 
-        public int? Rate {
-            get => Model?.Rate;
-            set => ExecuteCommand(value);
+        public string DisplayItemName
+        {
+            get
+            {
+                if (Model == null ||
+                    string.IsNullOrEmpty(Model.Item))
+                    return "";
+
+                string id =
+                    CachedDbs.AegisNameItem
+                        .ToStringId(Model.Item);
+
+                return DbUtilities.ItemId2Name(id);
+            }
         }
 
-        public int? Amount {
-            get => Model?.Amount;
-            set => ExecuteCommand(value);
+        public string Rate
+        {
+            get
+            {
+                if (Model == null || !Model.Rate.HasValue)
+                    return "";
+
+                return Model.Rate.Value.ToString();
+            }
+            set
+            {
+                int? newValue = null;
+
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    if (!int.TryParse(value, out int parsed))
+                        return;
+
+                    newValue = parsed;
+                }
+
+                ExecuteCommand(
+                    newValue,
+                    nameof(ItemGroupEntry.Rate));
+            }
         }
 
-        public int? Duration {
-            get => Model?.Duration;
-            set => ExecuteCommand(value);
+        public string Amount
+        {
+            get
+            {
+                if (Model == null || !Model.Amount.HasValue)
+                    return "";
+
+                return Model.Amount.Value.ToString();
+            }
+            set
+            {
+                int? newValue = null;
+
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    if (!int.TryParse(value, out int parsed))
+                        return;
+
+                    newValue = parsed;
+                }
+
+                ExecuteCommand(
+                    newValue,
+                    nameof(ItemGroupEntry.Amount));
+            }
+        }
+
+        public string Duration
+        {
+            get
+            {
+                if (Model == null || !Model.Duration.HasValue)
+                    return "";
+
+                return Model.Duration.Value.ToString();
+            }
+            set
+            {
+                int? newValue = null;
+
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    if (!int.TryParse(value, out int parsed))
+                        return;
+
+                    newValue = parsed;
+                }
+
+                ExecuteCommand(
+                    newValue,
+                    nameof(ItemGroupEntry.Duration));
+            }
         }
 
         public bool? Announced {

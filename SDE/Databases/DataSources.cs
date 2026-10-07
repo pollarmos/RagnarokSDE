@@ -347,6 +347,24 @@ namespace SDE.Databases {
             ImportTable = ItemGroupImport,
         };
 
+        // item_packages.yml 데이터 소스 추가
+        public static DataSource ItemPackageImport { get; } = new DataSource("item_package_db2")
+        {
+            DisplayName = "Item Package Import",
+            Paths = {
+				@"import\item_packages.yml",
+			},
+        };
+
+        public static DataSource ItemPackage { get; } = new DataSource("item_package_db")
+        {
+            DisplayName = "Item Package",
+            Paths = {
+				@"{DBPATH}\item_packages.yml",
+			},
+            ImportTable = ItemPackageImport,
+        };
+
         public static DataSource MobSkillImport { get; } = new DataSource("mob_skill_db2") {
 			DisplayName = "Mob Skill Import",
 			Paths = {

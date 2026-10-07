@@ -23,7 +23,7 @@
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="80"/>
-                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="250"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
@@ -41,9 +41,9 @@
         <!-- SubGroups / Entries -->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="320"/>
+                <ColumnDefinition Width="1.3*"/>
                 <ColumnDefinition Width="8"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
 
             <!-- SubGroups -->
@@ -61,15 +61,15 @@
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="SubGroup"
-												Width="80"
+												Width="60"
 												DisplayMemberBinding="{Binding SubGroup}"/>
 
                                 <GridViewColumn Header="Algorithm"
-												Width="130"
+												Width="70"
 												DisplayMemberBinding="{Binding Algorithm}"/>
 
                                 <GridViewColumn Header="Clear"
-												Width="60"
+												Width="50"
 												DisplayMemberBinding="{Binding Clear}"/>
                             </GridView>
                         </ListView.View>
@@ -77,11 +77,11 @@
                     <Grid Grid.Row="1"  Margin="3" IsEnabled="{Binding IsSubGroupSelected}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="85"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1"/>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="85"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="0"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"  Text="SubGroup"  VerticalAlignment="Center"  Margin="3,3,10,3"/>
                         <TextBox Grid.Column="1" Text="{Binding SelectedSubGroup.SubGroup,UpdateSourceTrigger=PropertyChanged}"	
@@ -126,25 +126,64 @@
 							  Margin="3">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Index"
-												Width="55"
-												DisplayMemberBinding="{Binding Index}"/>
-
-                                <GridViewColumn Header="Item"
-												Width="180"
-												DisplayMemberBinding="{Binding Item}"/>
-
-                                <GridViewColumn Header="Rate"
-												Width="50"
-												DisplayMemberBinding="{Binding Rate}"/>
-
-                                <GridViewColumn Header="Amount"
-												Width="60"
-												DisplayMemberBinding="{Binding Amount}"/>
-
-                                <GridViewColumn Header="Duration"
-												Width="75"
-												DisplayMemberBinding="{Binding Duration}"/>
+                                <GridViewColumn Header="Index" Width="40">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Index}" VerticalAlignment="Center" Margin="3,0"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Item" Width="100">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding Item, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                BorderThickness="0"
+                                                Background="Transparent"
+                                                VerticalContentAlignment="Center"
+                                                Padding="3,0"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Name"  Width="180">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding DisplayItemName}" VerticalAlignment="Center" Margin="3,0"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Rate" Width="40">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding Rate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                BorderThickness="0"
+                                                Background="Transparent"
+                                                VerticalContentAlignment="Center"
+                                                Padding="3,0"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Amount" Width="70">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                BorderThickness="0"
+                                                Background="Transparent"
+                                                VerticalContentAlignment="Center"
+                                                Padding="3,0"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Duration" Width="75">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding Duration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                BorderThickness="0"
+                                                Background="Transparent"
+                                                VerticalContentAlignment="Center"
+                                                Padding="3,0"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -180,11 +219,11 @@
                 <Grid Margin="8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="130"/>
-                        <ColumnDefinition Width="220"/>
-                        <ColumnDefinition Width="30"/>
                         <ColumnDefinition Width="130"/>
-                        <ColumnDefinition Width="220"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="130"/>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="10"/>
                     </Grid.ColumnDefinitions>
 
                     <Grid.RowDefinitions>
@@ -206,6 +245,7 @@
                     <TextBox Grid.Row="0" Grid.Column="1"
 							 Text="{Binding SelectedSubGroup.SelectedEntry.Index,
 											UpdateSourceTrigger=PropertyChanged}"
+                             IsReadOnly="True"
 							 Margin="3"/>
 
                     <TextBlock Grid.Row="0" Grid.Column="3"

@@ -20,7 +20,7 @@
         <!-- Groups / Items -->
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="180"/>
                 <ColumnDefinition Width="8"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
@@ -44,7 +44,7 @@
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Group"
-                                                Width="150"
+                                                Width="152"
                                                 DisplayMemberBinding="{Binding Group}"/>
                             </GridView>
                         </ListView.View>
@@ -110,31 +110,31 @@
                             <GridView>
 
                                 <GridViewColumn Header="ID"
-                                                Width="75"
+                                                Width="55"
                                                 DisplayMemberBinding="{Binding DisplayItemId}"/>
 
                                 <GridViewColumn Header="Item"
-                                                Width="180"
+                                                Width="100"
                                                 DisplayMemberBinding="{Binding Item}"/>
 
                                 <GridViewColumn Header="Name"
-                                                Width="180"
+                                                Width="150"
                                                 DisplayMemberBinding="{Binding DisplayItemName}"/>
 
                                 <GridViewColumn Header="Amount"
-                                                Width="65"
+                                                Width="50"
                                                 DisplayMemberBinding="{Binding Amount}"/>
 
                                 <GridViewColumn Header="Rental"
-                                                Width="65"
+                                                Width="40"
                                                 DisplayMemberBinding="{Binding RentalHours}"/>
 
                                 <GridViewColumn Header="Refine"
-                                                Width="60"
+                                                Width="40"
                                                 DisplayMemberBinding="{Binding Refine}"/>
 
                                 <GridViewColumn Header="Grade"
-                                                Width="60"
+                                                Width="40"
                                                 DisplayMemberBinding="{Binding Grade}"/>
 
                             </GridView>
@@ -173,11 +173,11 @@
                 <Grid Margin="8">
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="140"/>
-                        <ColumnDefinition Width="250"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="140"/>
-                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="160"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 

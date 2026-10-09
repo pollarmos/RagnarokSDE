@@ -1,5 +1,10 @@
 ﻿using SDE.Databases.Generic.Features;
+using SDE.Databases.ItemRandomOptionGroups.Features;
 using SDE.Editor.Database;
+using SDE.View;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace SDE.Databases.ItemPackages.Features
@@ -152,6 +157,37 @@ namespace SDE.Databases.ItemPackages.Features
         {
             get => Model?.RandomOptionGroup;
             set => ExecuteCommand(value);
+        }
+
+        public List<string> RandomOptionGroups
+        {
+            get
+            {
+                List<string> groups = new List<string>();
+
+                // RandomOptionGroup 제거용 빈 값
+                groups.Add("");
+
+                if (SdeEditor.Project == null)
+                    return groups;
+
+                var db = SdeEditor.Project.GetMergedTable(DataSources.ItemRandomOptionGroup);
+
+                if (db == null)
+                    return groups;
+
+                groups.AddRange(
+                    db.FastItems
+                        .OrderBy(p => p.GetKey<int>())
+                        .Select(p =>
+                            p.GetModel<ItemRandomOptionGroup>()?.Group)
+                        .Where(p =>
+                            !String.IsNullOrEmpty(p))
+                        .Distinct(
+                            StringComparer.OrdinalIgnoreCase));
+
+                return groups;
+            }
         }
 
         public void ExecuteCommand<T>(

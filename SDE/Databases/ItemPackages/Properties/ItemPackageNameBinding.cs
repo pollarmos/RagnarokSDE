@@ -14,7 +14,7 @@ namespace SDE.Databases.ItemPackages.Properties
             if (Tuple == null)
                 return "";
 
-            return DbUtilities.ItemId2AegisName(
+            return DbUtilities.ItemId2Name(
                 Tuple.GetKey<int>());
         }
     }

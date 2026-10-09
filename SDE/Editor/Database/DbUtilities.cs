@@ -14,19 +14,22 @@ using Utilities;
 namespace SDE.Editor.Database {
 	public class CachedDbAccessor {
 		private bool _dirty;
-		public Dictionary<string, int> _field2Id = new Dictionary<string, int>();
-		public MergedTable MergedTable;
+        public Dictionary<string, int> _field2Id;
+        private readonly IEqualityComparer<string> _comparer;
+        public MergedTable MergedTable;
 		public string FieldName { get; }
 		public DataSource Source { get; }
 		public Func<object, string> _accessor;
 
-		public CachedDbAccessor(DataSource source, string fieldName) {
-			Source = source;
-			MergedTable = SdeEditor.Project.GetMergedTable(source);
-			FieldName = fieldName;
-			var modelAttribute = MergedTable.AttributeList[DbAttribute.DefaultModel.Index];
-			_accessor = ReflectionOptimizer<string>.GetGetter(modelAttribute.DataType, fieldName);
-		}
+		public CachedDbAccessor(DataSource source, string fieldName, IEqualityComparer<string> comparer = null) {
+            Source = source;
+            MergedTable = SdeEditor.Project.GetMergedTable(source);
+            FieldName = fieldName;
+            _comparer = comparer ?? StringComparer.Ordinal;
+            _field2Id = new Dictionary<string, int>(_comparer);
+            var modelAttribute = MergedTable.AttributeList[DbAttribute.DefaultModel.Index];
+            _accessor = ReflectionOptimizer<string>.GetGetter(modelAttribute.DataType, fieldName);
+        }
 
 		public string ToStringId(string name) {
 			return ToId(name).ToString();
@@ -57,9 +60,9 @@ namespace SDE.Editor.Database {
 			if (!_dirty)
 				return;
 
-			_field2Id = new Dictionary<string, int>();
+			_field2Id = new Dictionary<string, int>(_comparer);
 
-			foreach (var entry in MergedTable.FastItems) {
+            foreach (var entry in MergedTable.FastItems) {
 				_field2Id[_accessor(entry.GetModel())] = entry.Key;
 			}
 
@@ -72,8 +75,8 @@ namespace SDE.Editor.Database {
 	}
 
 	public static class CachedDbs {
-		public static CachedDbAccessor AegisNameItem = new CachedDbAccessor(DataSources.Item, nameof(Item.AegisName));
-		public static CachedDbAccessor AegisNameMob = new CachedDbAccessor(DataSources.Mob, nameof(Mob.AegisName));
+        public static CachedDbAccessor AegisNameItem = new CachedDbAccessor(DataSources.Item, nameof(Item.AegisName), StringComparer.OrdinalIgnoreCase);
+        public static CachedDbAccessor AegisNameMob = new CachedDbAccessor(DataSources.Mob, nameof(Mob.AegisName));
 		public static CachedDbAccessor SkillName = new CachedDbAccessor(DataSources.Skill, nameof(Skill.Name));
 	}
 

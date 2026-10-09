@@ -365,6 +365,42 @@ namespace SDE.Databases {
             ImportTable = ItemPackageImport,
         };
 
+        // item_randomopt_db.yml
+        public static DataSource ItemRandomOptionImport { get; } = new DataSource("item_randomopt_db2")
+        {
+            DisplayName = "Item Random Opt Import",
+		    Paths = {
+				@"import\item_randomopt_db.yml",
+			},
+        };
+
+        public static DataSource ItemRandomOption { get; } = new DataSource("item_randomopt_db")
+        {
+            DisplayName = "Item Random Opt",
+            Paths = {
+			  @"{DBPATH}\item_randomopt_db.yml",
+			},
+            ImportTable = ItemRandomOptionImport,
+        };
+
+        // item_randomopt_group.yml
+        public static DataSource ItemRandomOptionGroupImport { get; } = new DataSource("item_randomopt_group2")
+        {
+            DisplayName = "Item Random Opt Gr Import",
+            Paths = {
+				@"import\item_randomopt_group.yml",
+            },
+        };
+
+        public static DataSource ItemRandomOptionGroup { get; } = new DataSource("item_randomopt_group")
+        {
+            DisplayName = "Item Random Opt Gr",
+            Paths = {
+				@"{DBPATH}\item_randomopt_group.yml",
+			},
+            ImportTable = ItemRandomOptionGroupImport,
+        };
+
         public static DataSource MobSkillImport { get; } = new DataSource("mob_skill_db2") {
 			DisplayName = "Mob Skill Import",
 			Paths = {

@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Controls;
 using SDE.Databases.AchievementIcons;
 using SDE.Databases.Achievements;
 using SDE.Databases.Castles;
@@ -9,6 +6,10 @@ using SDE.Databases.ClientItemResources;
 using SDE.Databases.ClientItems;
 using SDE.Databases.ClientQuests;
 using SDE.Databases.ItemCombos;
+using SDE.Databases.ItemGroups;
+using SDE.Databases.ItemPackages;
+using SDE.Databases.ItemRandomOptionGroups;
+using SDE.Databases.ItemRandomOptions;
 using SDE.Databases.Items;
 using SDE.Databases.Mobs;
 using SDE.Databases.MobSkills;
@@ -17,8 +18,9 @@ using SDE.Databases.Quests;
 using SDE.Databases.Skills;
 using SDE.Databases.Titles;
 using SDE.Editor.Generic.DbTabs;
-using SDE.Databases.ItemGroups;
-using SDE.Databases.ItemPackages;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Controls;
 
 namespace SDE.Editor.Database {
 	/// <summary>
@@ -42,6 +44,10 @@ namespace SDE.Editor.Database {
             _dbs.Add(new ItemGroupDatabaseImport());
             _dbs.Add(new ItemPackageDatabase());
             _dbs.Add(new ItemPackageDatabaseImport());
+            _dbs.Add(new ItemRandomOptionDatabase());
+            _dbs.Add(new ItemRandomOptionDatabaseImport());
+            _dbs.Add(new ItemRandomOptionGroupDatabase());
+            _dbs.Add(new ItemRandomOptionGroupDatabaseImport());
             _dbs.Add(new SkillDatabase());
 			_dbs.Add(new SkillDatabaseImport());
 			_dbs.Add(new MobDatabase());

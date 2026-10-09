@@ -13,6 +13,17 @@ namespace SDE.Databases.ItemPackages.Features
         public RangeObservableCollection<ItemPackageGroupViewModel> Groups { get; }
             = new RangeObservableCollection<ItemPackageGroupViewModel>();
 
+        public string AegisName
+        {
+            get
+            {
+                if (Tuple == null)
+                    return "";
+
+                return DbUtilities.ItemId2AegisName(Tuple.GetKey<int>());
+            }
+        }
+
         private ItemPackageGroupViewModel _selectedGroup;
 
         public bool IsLocked { get; set; }

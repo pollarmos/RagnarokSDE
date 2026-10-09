@@ -12,13 +12,35 @@
 
     <Grid Margin="5">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="8"/>
             <RowDefinition Height="260"/>
             <RowDefinition Height="8"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Groups / Items -->
+        <!-- Package -->
         <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+               Text="Package name"
+               VerticalAlignment="Center"
+               Margin="3"/>
+
+            <TextBox Grid.Column="1"
+             Text="{Binding AegisName, Mode=OneWay}"
+             IsReadOnly="True"
+             VerticalContentAlignment="Center"
+             Margin="3"/>
+        </Grid>
+
+        <!-- Groups / Items -->
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="180"/>
                 <ColumnDefinition Width="8"/>
@@ -163,7 +185,7 @@
         </Grid>
 
         <!-- Selected Item -->
-        <GroupBox Grid.Row="2"
+        <GroupBox Grid.Row="4"
                   Header="Selected Item"
                   IsEnabled="{Binding SelectedGroup.IsItemSelected}">
 
@@ -293,11 +315,15 @@
                                VerticalAlignment="Center"
                                Margin="3"/>
 
-                    <TextBox Grid.Row="3"
-                             Grid.Column="4"
-                             Text="{Binding SelectedGroup.SelectedItem.RandomOptionGroup,
-                                            UpdateSourceTrigger=PropertyChanged}"
-                             Margin="3"/>
+                    <ComboBox  ItemsSource="{Binding SelectedGroup.SelectedItem.RandomOptionGroups}"
+                               Grid.Row="3"
+                               Grid.Column="4"
+                               Text="{Binding SelectedGroup.SelectedItem.RandomOptionGroup,
+                               Mode=TwoWay,
+                               UpdateSourceTrigger=PropertyChanged}"
+                               IsEditable="True"
+                               IsTextSearchEnabled="True"
+                               Margin="3"/>
 
                 </Grid>
             </ScrollViewer>

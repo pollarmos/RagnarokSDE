@@ -41,9 +41,9 @@
         <!-- SubGroups / Entries -->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1.3*"/>
+                <ColumnDefinition Width="260"/>
                 <ColumnDefinition Width="8"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <!-- SubGroups -->
@@ -65,11 +65,11 @@
 												DisplayMemberBinding="{Binding SubGroup}"/>
 
                                 <GridViewColumn Header="Algorithm"
-												Width="70"
+												Width="75"
 												DisplayMemberBinding="{Binding Algorithm}"/>
 
                                 <GridViewColumn Header="Clear"
-												Width="50"
+												Width="42"
 												DisplayMemberBinding="{Binding Clear}"/>
                             </GridView>
                         </ListView.View>
@@ -77,16 +77,16 @@
                     <Grid Grid.Row="1"  Margin="3" IsEnabled="{Binding IsSubGroupSelected}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="30"/>
                             <ColumnDefinition Width="1"/>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="97"/>
                             <ColumnDefinition Width="0"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0"  Text="SubGroup"  VerticalAlignment="Center"  Margin="3,3,10,3"/>
+                        <TextBlock Grid.Column="0"  Text="SubGroup"  VerticalAlignment="Center"  Margin="2,3,2,3"/>
                         <TextBox Grid.Column="1" Text="{Binding SelectedSubGroup.SubGroup,UpdateSourceTrigger=PropertyChanged}"	
                                  VerticalContentAlignment="Center" Margin="3"/>
-                        <TextBlock Grid.Column="3" Text="Algorithm" VerticalAlignment="Center"  Margin="3,3,10,3"/>
+                        <TextBlock Grid.Column="3" Text="Algorithm" VerticalAlignment="Center"  Margin="2,3,2,3"/>
                         <ComboBox Grid.Column="4" SelectedValue="{Binding SelectedSubGroup.Algorithm,
 								  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Content"  Margin="3">
                             <ComboBoxItem Content="SharedPool"/>
@@ -219,10 +219,10 @@
                 <Grid Margin="8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="130"/>
-                        <ColumnDefinition Width="130"/>
+                        <ColumnDefinition Width="160"/>
                         <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="130"/>
-                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="160"/>
                         <ColumnDefinition Width="10"/>
                     </Grid.ColumnDefinitions>
 
@@ -306,10 +306,15 @@
 							   VerticalAlignment="Center"
 							   Margin="3"/>
 
-                    <TextBox Grid.Row="3" Grid.Column="1"
-							 Text="{Binding SelectedSubGroup.SelectedEntry.RandomOptionGroup,
-											UpdateSourceTrigger=PropertyChanged}"
-							 Margin="3"/>
+                    <ComboBox Grid.Row="3"
+                              Grid.Column="1"
+                              ItemsSource="{Binding SelectedSubGroup.SelectedEntry.RandomOptionGroups}"
+                              Text="{Binding SelectedSubGroup.SelectedEntry.RandomOptionGroup,
+                                     Mode=TwoWay,
+                                     UpdateSourceTrigger=PropertyChanged}"
+                              IsEditable="True"
+                              IsTextSearchEnabled="True"
+                              Margin="3"/>
 
                     <TextBlock Grid.Row="3" Grid.Column="3"
 							   Text="Clear"

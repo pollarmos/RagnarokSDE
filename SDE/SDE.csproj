@@ -190,6 +190,33 @@
     <Compile Include="Databases\ItemPackages\Parser\ItemPackageReaderYaml.cs" />
     <Compile Include="Databases\ItemPackages\Parser\ItemPackageWriterYaml.cs" />
     <Compile Include="Databases\ItemPackages\Properties\ItemPackageNameBinding.cs" />
+    <Compile Include="Databases\ItemRandomOptionGroups\Features\ItemRandomOptionGroup.cs" />
+    <Compile Include="Databases\ItemRandomOptionGroups\Features\ItemRandomOptionGroupOption.cs" />
+    <Compile Include="Databases\ItemRandomOptionGroups\Features\ItemRandomOptionGroupOptionViewModel.cs" />
+    <Compile Include="Databases\ItemRandomOptionGroups\Features\ItemRandomOptionGroupSlot.cs" />
+    <Compile Include="Databases\ItemRandomOptionGroups\Features\ItemRandomOptionGroupSlotViewModel.cs" />
+    <Compile Include="Databases\ItemRandomOptionGroups\Features\ItemRandomOptionGroupViewModel.cs" />
+    <Compile Include="Databases\ItemRandomOptionGroups\Features\ItemRandomOptionGroupViewYaml.xaml.cs">
+      <DependentUpon>ItemRandomOptionGroupViewYaml.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Databases\ItemRandomOptionGroups\ItemRandomOptionGroupAttributes.cs" />
+    <Compile Include="Databases\ItemRandomOptionGroups\ItemRandomOptionGroupDatabase.cs" />
+    <Compile Include="Databases\ItemRandomOptionGroups\Parser\ItemRandomOptionGroupParserProvider.cs" />
+    <Compile Include="Databases\ItemRandomOptionGroups\Parser\ItemRandomOptionGroupReaderYaml.cs" />
+    <Compile Include="Databases\ItemRandomOptionGroups\Parser\ItemRandomOptionGroupWriterYaml.cs" />
+    <Compile Include="Databases\ItemRandomOptionGroups\Properties\ItemRandomOptionGroupNameBinding.cs" />
+    <Compile Include="Databases\ItemRandomOptions\Features\ItemRandomOption.cs" />
+    <Compile Include="Databases\ItemRandomOptions\Features\ItemRandomOptionViewModel.cs" />
+    <Compile Include="Databases\ItemRandomOptions\Features\ItemRandomOptionViewYaml.xaml.cs">
+      <DependentUpon>ItemRandomOptionViewYaml.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Databases\ItemRandomOptions\ItemRandomOptionAttributes.cs" />
+    <Compile Include="Databases\ItemRandomOptions\ItemRandomOptionDatabase.cs" />
+    <Compile Include="Databases\ItemRandomOptions\Parser\ItemRandomOptionParserProvider.cs" />
+    <Compile Include="Databases\ItemRandomOptions\Parser\ItemRandomOptionReaderYaml.cs" />
+    <Compile Include="Databases\ItemRandomOptions\Parser\ItemRandomOptionWriterYaml.cs" />
+    <Compile Include="Databases\ItemRandomOptions\Properties\ItemRandomOptionDescriptions.cs" />
+    <Compile Include="Databases\ItemRandomOptions\Properties\ItemRandomOptionNameBinding.cs" />
     <Compile Include="Databases\Items\Controls\ScriptAutocompleteButton.xaml.cs">
       <DependentUpon>ScriptAutocompleteButton.xaml</DependentUpon>
     </Compile>
@@ -929,6 +956,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Databases\ItemRandomOptionGroups\Features\ItemRandomOptionGroupViewYaml.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Databases\ItemRandomOptions\Features\ItemRandomOptionViewYaml.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Databases\Items\Controls\ScriptAutocompleteButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1521,7 +1556,9 @@
   <ItemGroup>
     <Resource Include="Resources\sword.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\item_randomopt_description.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
@@ -1551,6 +1588,7 @@
     <ExternalDlls Include="$(ExternalDllsPath)TokeiLibrary.dll" Visible="false" />
     <ExternalDlls Include="$(ExternalDllsPath)Utilities.dll" Visible="false" />
   </ItemGroup>
+  <ItemGroup />
   <Target Name="CopyExternalDlls" BeforeTargets="BeforeBuild">
     <MakeDir Directories="$(GrfEditorDllsPath)" Condition="!Exists('$(GrfEditorDllsPath)')" />
     <Copy SourceFiles="@(ExternalDlls)" DestinationFolder="$(GrfEditorDllsPath)" SkipUnchangedFiles="true" Condition="Exists('$(ExternalDllsPath)')" />

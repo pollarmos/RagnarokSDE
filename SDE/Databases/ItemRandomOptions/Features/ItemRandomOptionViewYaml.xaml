@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="SDE.Databases.ItemRandomOptions.Features.ItemRandomOptionViewYaml"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             Foreground="{DynamicResource TextForeground}"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch">
+
+    <Grid Margin="8">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Id -->
+        <TextBlock Grid.Row="0"
+                   Grid.Column="0"
+                   Text="Id"
+                   VerticalAlignment="Center"
+                   Margin="3"/>
+
+        <TextBox Grid.Row="0"
+                 Grid.Column="1"
+                 Text="{Binding Id, Mode=OneWay}"
+                 IsReadOnly="True"
+                 Margin="3"/>
+
+
+        <!-- Option -->
+        <TextBlock Grid.Row="1"
+                   Grid.Column="0"
+                   Text="Option"
+                   VerticalAlignment="Center"
+                   Margin="3"/>
+
+        <TextBox Grid.Row="1"
+                 Grid.Column="1"
+                 Text="{Binding Option,
+                                Mode=TwoWay,
+                                UpdateSourceTrigger=PropertyChanged}"
+                 Margin="3"/>
+
+
+        <!-- Script -->
+        <TextBlock Grid.Row="2"
+                   Grid.Column="0"
+                   Text="Script"
+                   VerticalAlignment="Top"
+                   Margin="3"/>
+
+        <TextBox Grid.Row="2"
+                 Grid.Column="1"
+                 Text="{Binding Script,
+                                Mode=TwoWay,
+                                UpdateSourceTrigger=PropertyChanged}"
+                 AcceptsReturn="True"
+                 AcceptsTab="True"
+                 VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Auto"
+                 TextWrapping="NoWrap"
+                 VerticalContentAlignment="Top"
+                 Margin="3"/>
+        <!-- Description -->
+        <TextBlock Grid.Row="3"
+                Grid.Column="0"
+                Text="Description"
+                VerticalAlignment="Center"
+                Margin="3"/>
+
+        <TextBox Grid.Row="3"
+                Grid.Column="1"
+                Text="{Binding Description, Mode=OneWay}"
+                IsReadOnly="True"
+                Margin="3"/>
+    </Grid>
+</UserControl>

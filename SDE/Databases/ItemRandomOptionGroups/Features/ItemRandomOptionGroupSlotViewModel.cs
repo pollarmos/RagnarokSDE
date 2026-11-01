@@ -105,7 +105,7 @@ namespace SDE.Databases.ItemRandomOptionGroups.Features
 
         public void ChangeOptions(List<ItemRandomOptionGroupOption> options, ListCommandMode mode)
         {
-            if (options == null || options.Count == 0 || Model == null || _vm.Tuple == null)
+            if (options == null || (options.Count == 0 && mode != ListCommandMode.ChangeList) || Model == null || _vm.Tuple == null)
                 return;
 
             try

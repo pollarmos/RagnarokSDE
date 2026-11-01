@@ -71,13 +71,13 @@ namespace SDE.Databases.Items.Features {
             }
             set
             {
-                if (value == null)
+                if (value == null || Model == null)
                     return;
 
                 if (Tab?.Database?.Source?.IsImport == true)
-                    Model.TypeDefined = true;
-
-                ExecuteCommand((ItemType)value.Value);
+                    _setImportType((ItemType)value.Value);
+                else
+                    ExecuteCommand((ItemType)value.Value);
 
                 OnPropertyChanged(nameof(Type));
                 OnPropertyChanged(nameof(HasSubType));
@@ -85,6 +85,39 @@ namespace SDE.Databases.Items.Features {
                 OnPropertyChanged(nameof(HasNoGear));
             }
         }
+        private void _setImportType(ItemType type) {
+            var tuples = Tab.List.SelectedItems.OfType<ReadableTuple>()
+                .Where(tuple => {
+                    var item = tuple.GetModel<Item>();
+                    return !item.TypeDefined || item.Type != type;
+                })
+                .ToList();
+
+            if (tuples.Count == 0)
+                return;
+
+            try {
+                IsLocked = true;
+                var commands = Tab.Table.Commands;
+                commands.Begin();
+
+                try {
+                    foreach (var tuple in tuples) {
+                        var item = tuple.GetModel<Item>();
+                        // Presence and value must be restored together by one Undo.
+                        commands.SetModelValue(tuple, item, nameof(Item.TypeDefined), true);
+                        commands.SetModelValue(tuple, item, nameof(Item.Type), type);
+                    }
+                }
+                finally {
+                    commands.End();
+                }
+            }
+            finally {
+                IsLocked = false;
+            }
+        }
+
         public EnumInfoBase AmmoType { get => EnumInfos.GetEnumBase(Model?.AmmoType); set => ExecuteCommand((AmmoType)value.Value); }
 		public EnumInfoBase CardType { get => EnumInfos.GetEnumBase(Model?.CardType); set => ExecuteCommand((CardType)value.Value); }
 		public EnumInfoBase WeaponType { get => EnumInfos.GetEnumBase(Model?.WeaponType); set => ExecuteCommand((WeaponType)value.Value); }

@@ -33,7 +33,8 @@
 					   Margin="3"/>
 
             <TextBox Grid.Column="1"
-					 Text="{Binding Group, UpdateSourceTrigger=PropertyChanged}"
+					 Text="{Binding Group, Mode=OneWay}"
+					 IsReadOnly="True"
 					 VerticalContentAlignment="Center"
 					 Margin="3"/>
         </Grid>

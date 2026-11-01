@@ -96,8 +96,8 @@ namespace SDE.Databases.ItemCombos.Parser {
 					var script = modelsToAddEntry.Key;
 					var models = modelsToAddEntry.Value;
 
-					// The entry already exists, mark it as added through insert line to sort them
-					if (indexedScripts.TryGetValue(script, out var parserObject)) {
+					// Removed Script groups remain indexed; recreate them with a complete header and Script.
+					if (indexedScripts.TryGetValue(script, out var parserObject) && !parserObject.Removed) {
 						StringBuilder builderEntry = new StringBuilder();
 
 						foreach (var model in models) {

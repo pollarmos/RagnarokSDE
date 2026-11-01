@@ -4,6 +4,12 @@ using System;
 
 namespace SDE.Databases.Items.Parser {
 	public class ItemParserProvider : DatabaseParserProvider {
+        private readonly Func<bool> _isImport;
+
+        public ItemParserProvider(Func<bool> isImport = null) {
+            _isImport = isImport;
+        }
+
 		public override DatabaseReader GetReader(FileType fileType) {
 			switch (fileType) {
 				case FileType.Yaml:
@@ -18,7 +24,7 @@ namespace SDE.Databases.Items.Parser {
 		public override DatabaseWriter GetWriter(FileType fileType) {
 			switch (fileType) {
 				case FileType.Yaml:
-					return new ItemWriterYaml();
+					return new ItemWriterYaml(_isImport?.Invoke() ?? false);
 				case FileType.Txt:
 					return new ItemWriterCsv();
 			}

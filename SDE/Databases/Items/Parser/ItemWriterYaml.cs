@@ -18,6 +18,13 @@ using Utilities.Extension;
 namespace SDE.Databases.Items.Parser {
 	public class ItemWriterYaml : DatabaseWriterYaml {
         private bool _isImport;
+
+        public ItemWriterYaml() {
+        }
+
+        public ItemWriterYaml(bool isImport) {
+            _isImport = isImport;
+        }
         public override string KeyField => "Id";
 
 		public override void Writer(DbSaveContext context, BaseDatabase db) {

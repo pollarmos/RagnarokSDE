@@ -17,7 +17,7 @@ namespace SDE.Databases.Items {
 		public ItemDatabase() : base(ItemAttributes.Model) {
 			Source = DataSources.Item;
 			AttributeList = ItemAttributes.AttributeList;
-			Parser = new ItemParserProvider();
+			Parser = new ItemParserProvider(() => Source.IsImport);
 			TabGenerator.OnInitSettings += (tab, settings, db) => {
 				settings.AddCommand(TabCommandAnchors.CopyTo,
 					new CopyToImportTable(this),

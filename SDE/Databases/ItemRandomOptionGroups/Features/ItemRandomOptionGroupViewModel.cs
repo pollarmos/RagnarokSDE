@@ -211,7 +211,7 @@ namespace SDE.Databases.ItemRandomOptionGroups.Features
 
         public void ChangeSlots(List<ItemRandomOptionGroupSlot> slots, ListCommandMode mode)
         {
-            if (slots == null || slots.Count == 0 || Model == null || Tuple == null)
+            if (slots == null || (slots.Count == 0 && mode != ListCommandMode.ChangeList) || Model == null || Tuple == null)
                 return;
 
             try
@@ -235,7 +235,7 @@ namespace SDE.Databases.ItemRandomOptionGroups.Features
 
         public void ChangeRandomOptions(List<ItemRandomOptionGroupOption> options, ListCommandMode mode)
         {
-            if (options == null || options.Count == 0 || Model == null || Tuple == null)
+            if (options == null || (options.Count == 0 && mode != ListCommandMode.ChangeList) || Model == null || Tuple == null)
                 return;
 
             try

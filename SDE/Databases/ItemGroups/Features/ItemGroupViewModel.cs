@@ -40,10 +40,7 @@ namespace SDE.Databases.ItemGroups.Features {
             OnPropertyChanged("");
         }
 
-        public string Group {
-            get => Model?.Group;
-            set => ExecuteCommand(value);
-        }
+        public string Group => Model?.Group;
 
         public ItemGroupSubGroupViewModel SelectedSubGroup {
             get => _selectedSubGroup;

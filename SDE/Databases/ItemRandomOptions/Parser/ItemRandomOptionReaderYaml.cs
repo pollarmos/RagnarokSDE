@@ -24,8 +24,14 @@ namespace SDE.Databases.ItemRandomOptions.Parser
             int id = Int32.Parse(
                 idObject.ObjectValue);
 
-            ItemRandomOption model =
-                new ItemRandomOption();
+            var table = context.AbsractDb.Table;
+            table.EnsureExists(id);
+            var tuple = table.GetTuple(id);
+            var model = tuple.GetModel<ItemRandomOption>();
+            var previousModel = model;
+
+            if (table.EnableEvents)
+                model = (ItemRandomOption)model.Clone();
 
             foreach (var entry
                 in item.OfType<ParserKeyValue>())
@@ -47,10 +53,8 @@ namespace SDE.Databases.ItemRandomOptions.Parser
                 }
             }
 
-            context.AbsractDb.Table.SetRaw(
-                id,
-                ItemRandomOptionAttributes.Model,
-                model);
+            if (table.EnableEvents && previousModel != null)
+                table.Commands.Set(tuple, ItemRandomOptionAttributes.Model, model, false);
         }
     }
 }

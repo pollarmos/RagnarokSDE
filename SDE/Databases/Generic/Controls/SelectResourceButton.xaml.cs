@@ -1,4 +1,5 @@
 ﻿using ErrorManager;
+using GRF.Image;
 using SDE.Databases.ClientItems.Features;
 using SDE.Databases.Generic.Parser;
 using SDE.Editor.LuaTables;
@@ -6,8 +7,13 @@ using SDE.View;
 using SDE.View.Dialogs;
 using System;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using TokeiLibrary;
+using TokeiLibrary.WPF.Styles;
 using Utilities.Services;
 
 namespace SDE.Databases.Generic.Controls {
@@ -123,12 +129,57 @@ namespace SDE.Databases.Generic.Controls {
 
 		private void _button_Click(object sender, RoutedEventArgs e) {
 			if (AutoComplete != Visibility.Visible) {
-				_selectFromList_Click(null, null);
+                try {
+                    var preview = _createCardPreview();
+                    if (preview != null) {
+                        preview.ShowDialog();
+                        return;
+                    }
+
+                    _selectFromList_Click(null, null);
+                }
+                catch (Exception err) {
+                    ErrorHandler.HandleException(err);
+                }
 				return;
 			}
 
 			_button.ContextMenu.IsOpen = true;
 		}
+
+        private Window _createCardPreview() {
+            if (Source != SelectResourceSource.Card || String.IsNullOrWhiteSpace(SourceField))
+                return null;
+
+            var resources = SdeEditor.MetaGrf;
+            var directory = EncodingService.FromAnyToDisplayEncoding(_getGrfPath());
+            var filename = EncodingService.FromAnyToDisplayEncoding(SourceField) + ".bmp";
+            var entry = resources.GetEntry(Path.Combine(directory, filename));
+
+            if (entry == null) {
+                var path = resources.FilesInDirectory(directory).FirstOrDefault(p =>
+                    String.Equals(Path.GetFileName(p), filename, StringComparison.OrdinalIgnoreCase));
+                if (path == null)
+                    return null;
+
+                entry = resources.GetEntry(path);
+            }
+
+            if (entry == null)
+                return null;
+
+            var image = ImageProvider.GetImage(entry).Cast<BitmapSource>();
+            return new TkWindow(entry.DisplayRelativePath, "cde.ico", SizeToContent.WidthAndHeight, ResizeMode.CanResize) {
+                Owner = WpfUtilities.TopWindow,
+                MaxWidth = SystemParameters.WorkArea.Width * 0.9,
+                MaxHeight = SystemParameters.WorkArea.Height * 0.9,
+                Content = new ScrollViewer {
+                    HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                    VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                    Content = new Image { Source = image, Stretch = Stretch.None }
+                }
+            };
+        }
 
 		private string _getExtension() {
 			switch (Source) {

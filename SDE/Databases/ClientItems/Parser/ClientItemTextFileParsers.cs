@@ -29,7 +29,8 @@ namespace SDE.Databases.ClientItems.Parser {
 	public class CardIllustrationParser : ClientItemTextFileParser {
 		public CardIllustrationParser() {
 			GetFilename = () => ProjectConfiguration.ClientCardIllustration;
-			AllowMultiLine = true;
+			// An illustration name occupies one line; ID# represents an empty name.
+			AllowMultiLine = false;
 		}
 
 		public override void Read(ClientItem model, string[] elements) {
